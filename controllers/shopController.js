@@ -1,4 +1,4 @@
-import Shop from "../models/User.js";
+import Shop from "../models/Shop.js";
 
 // Get All Shops with Pagination
 export const getAllShop = async (req, res) => {
