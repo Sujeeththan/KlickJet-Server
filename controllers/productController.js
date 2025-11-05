@@ -8,6 +8,14 @@ export const getAllProduct = async (req, res) => {
 
     const filter = {};
 
+    if (req.query.product_name) {
+      filter.product_name = { $regex: req.query.product_name, $options: "i" };
+    }
+
+    if (req.query.in_stock) {
+      filter.in_stock = { $regex: req.query.in_stock, $options: "i" };
+    }
+
     const totalProducts = await Product.countDocuments(filter);
     const products = await Product.find(filter).skip(skip).limit(limit);
 
