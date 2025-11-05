@@ -8,6 +8,7 @@ import orderRouter from "./routes/orderRoutes.js";
 import cors from "cors";
 import userRouter from "./routes/userRoutes.js";
 import sellerRouter from "./routes/sellerRoutes.js";
+import delivererRouter from "./routes/delivererRoutes.js";
 
 const allowedOrigins = [];
 
@@ -27,7 +28,7 @@ connectDB();
 app.use("/api/customers", customerRouter);
 app.use("/api/items", itemRouter);
 app.use("/api/users", userRouter);
-app.use("/api/deliveryPerson", deliveryPersonRouter);
+app.use("/api/deliverer", delivererRouter);
 app.use("/api/delivery", deliveryRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/seller", sellerRouter);
