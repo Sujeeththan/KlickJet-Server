@@ -21,11 +21,12 @@ export const getAllOrder = async (req, res) => {
     }
 
     const totalOrders = await Order.countDocuments(filter);
-    const orders = await Order.find(filter).skip(skip).limit(limit);
+    const orders = await Order.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .populate({ path: "customer", select: "customer_name" })
 
-    //  .populate('customer')
-    //  .populate('deliverer')
-    //  .populate('item')
+      .populate({ path: "item", select: "name sku stock" });
 
     res.status(200).json({
       success: true,
