@@ -12,17 +12,31 @@ const customerSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      match: [/.+\@.+\..+/, "Invalid email"],
     },
 
-    phone: {
-      type: String,
-      required: true,
-    },
+    phone: { type: String, required: [true, "Phone number required"] },
 
     address: {
       type: String,
       optional: null,
       trim: true,
+    },
+
+    isActive: { type: Boolean, default: true },
+
+    deletedAt: { type: Date, default: null },
+
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    updatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
 
     notes: {
