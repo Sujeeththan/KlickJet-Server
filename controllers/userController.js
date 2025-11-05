@@ -1,20 +1,27 @@
 import User from "../models/User.js";
 
-// Get All Users with Pagination
 export const getAllUsers = async (req, res) => {
   try {
-    // Default values if not provided
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-
-    // Calculate skip
     const skip = (page - 1) * limit;
 
-    // Fetch paginated users
-    const users = await User.find().skip(skip).limit(limit);
+    const filter = {};
 
-    // Count total users for pagination metadata
-    const totalUsers = await User.countDocuments();
+    if (req.query.name) {
+      filter.name = { $regex: req.query.name, $option: "i" };
+    }
+
+    if (req.query.email) {
+      filter.email = { $regex: req.query.email, $option: "i" };
+    }
+
+    if (req.query.role) {
+      filter.role = { $regex: req.query.role, $option: "i" };
+    }
+
+    const users = await User.find(filter).skip(skip).limit(limit);
+    const totalUsers = await User.countDocuments(filter);
 
     res.status(200).json({
       success: true,
@@ -23,6 +30,7 @@ export const getAllUsers = async (req, res) => {
       limit,
       totalUsers,
       totalPages: Math.ceil(totalUsers / limit),
+      filter,
       users,
     });
   } catch (error) {
