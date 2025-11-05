@@ -1,7 +1,7 @@
-import Shop from "../models/Shop.js";
+import Seller from "../models/Seller.js";
 
-// Get All Shops with Pagination
-export const getAllShop = async (req, res) => {
+// Get All Seller with Pagination
+export const getAllSeller = async (req, res) => {
   try {
     // Default values if not provided
     const page = parseInt(req.query.page) || 1;
@@ -10,111 +10,111 @@ export const getAllShop = async (req, res) => {
     // Calculate skip
     const skip = (page - 1) * limit;
 
-    // Fetch paginated shops
-    const shops = await Shop.find().skip(skip).limit(limit);
+    // Fetch paginated seller
+    const seller = await Seller.find().skip(skip).limit(limit);
 
-    // Count total shops for pagination metadata
-    const totalShop = await Shop.countDocuments();
+    // Count total seller for pagination metadata
+    const totalSeller = await Seller.countDocuments();
 
     res.status(200).json({
       success: true,
-      message: "Shops fetched successfully",
+      message: "Seller fetched successfully",
       page,
       limit,
-      totalShop,
-      totalPages: Math.ceil(totalShop / limit),
-      shops,
+      totalSeller,
+      totalPages: Math.ceil(totalSeller / limit),
+      seller,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Get Shop by ID
-export const getShopById = async (req, res) => {
+// Get Seller by ID
+export const getSellerById = async (req, res) => {
   try {
-    const shop = await Shop.findById(req.params.id);
-    if (!shop) {
-      return res.status(404).json({ message: "Shop Not Found" });
+    const seller = await Seller.findById(req.params.id);
+    if (!seller) {
+      return res.status(404).json({ message: "Seller Not Found" });
     }
-    res.status(200).json({ shop });
+    res.status(200).json({ seller });
   } catch (error) {
     if (error.name === "CastError") {
-      return res.status(400).json({ message: "Invalid Shop ID Format" });
+      return res.status(400).json({ message: "Invalid Seller ID Format" });
     }
     res.status(500).json({ error: error.message });
   }
 };
 
-// Create Shop
-export const createShop = async (req, res) => {
+// Create Seller
+export const createSeller = async (req, res) => {
   try {
-    const newShop = new Shop(req.body);
-    const savedShop = await newShop.save();
+    const newSeller = new Seller(req.body);
+    const savedSeller = await newSeller.save();
     res.status(201).json({
       success: true,
-      message: "Shop Created Successfully",
-      shop: savedShop,
+      message: "Seller Created Successfully",
+      seller: savedSeller,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Update shop
-export const updateShop = async (req, res) => {
+// Update seller
+export const updateSeller = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const updatedShop = await Shop.findByIdAndUpdate(id, req.body, {
+    const updatedSeller = await Seller.findByIdAndUpdate(id, req.body, {
       new: true,
       upsert: false,
       runValidators: true,
     });
 
-    if (!updateShop) {
-      return res.status(404).json({ message: "Shop Not Found" });
+    if (!updatedSeller) {
+      return res.status(404).json({ message: "Seller Not Found" });
     }
 
     res.status(200).json({
       success: true,
-      message: "Shop Updated Successfully",
-      user: updatedShop,
+      message: "Seller Updated Successfully",
+      seller: updatedSeller,
     });
   } catch (error) {
     if (error.name === "CastError") {
-      return res.status(400).json({ message: "Invalid Shop ID Format" });
+      return res.status(400).json({ message: "Invalid Seller ID Format" });
     }
     res.status(500).json({ error: error.message });
   }
 };
 
-// Delete Shop
-export const deleteShop = async (req, res) => {
+// Delete Seller
+export const deleteSeller = async (req, res) => {
   try {
-    const shop = await Shop.findByIdAndDelete(req.params.id);
+    const seller = await Seller.findByIdAndDelete(req.params.id);
 
-    if (!shop) {
+    if (!seller) {
       return res.status(404).json({
         success: false,
-        message: "Shop Not Found or Already Deleted",
+        message: "Seller Not Found or Already Deleted",
       });
     }
 
     res.status(200).json({
       success: true,
-      message: "Shop Deleted Successfully",
+      message: "Seller Deleted Successfully",
     });
   } catch (error) {
     if (error.name === "CastError") {
       return res.status(400).json({
         success: false,
-        message: "Invalid Shop ID Format",
+        message: "Invalid Seller ID Format",
       });
     }
     res.status(500).json({
       success: false,
-      message: "Failed to Delete Shop",
+      message: "Failed to Delete Seller",
       error: error.message,
     });
   }
