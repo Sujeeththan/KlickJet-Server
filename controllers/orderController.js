@@ -1,6 +1,5 @@
 import Order from "../models/Order.js";
 
-// Get all orders with pagination
 export const getAllOrder = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
