@@ -1,6 +1,5 @@
 import Item from "../models/Item.js";
 
-// Get all items with pagination
 export const getAllItems = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
