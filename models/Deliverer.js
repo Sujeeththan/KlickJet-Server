@@ -6,7 +6,7 @@ const delivererSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    phone: {
+    phone_no: {
       type: String,
       required: true,
     },
