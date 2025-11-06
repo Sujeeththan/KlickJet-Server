@@ -6,7 +6,7 @@ import {
   createPayment,
   updatePayment,
   deletePayment,
-} from "../controllers/productController.js";
+} from "../controllers/paymentController.js";
 
 const PaymentRouter = express.Router();
 
