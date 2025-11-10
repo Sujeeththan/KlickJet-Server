@@ -1,19 +1,23 @@
 import express from "express";
-
 import {
-  getAllProduct,
+  getAllProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
 } from "../controllers/productController.js";
+import { verifyToken, optionalAuth } from "../middleware/auth.js";
+import { verifyRole } from "../middleware/roleMiddleware.js";
 
 const productRouter = express.Router();
 
-productRouter.get("/", getAllProduct);
-productRouter.get("/:id", getProductById);
-productRouter.post("/", createProduct);
-productRouter.put("/:id", updateProduct);
-productRouter.delete("/:id", deleteProduct);
+// Public routes - anyone can view products (optional auth for sellers to filter their own)
+productRouter.get("/", optionalAuth, getAllProducts);
+productRouter.get("/:id", optionalAuth, getProductById);
+
+// Protected routes - sellers can manage their products
+productRouter.post("/", verifyToken, verifyRole("seller"), createProduct);
+productRouter.put("/:id", verifyToken, verifyRole(["admin", "seller"]), updateProduct);
+productRouter.delete("/:id", verifyToken, verifyRole(["admin", "seller"]), deleteProduct);
 
 export default productRouter;
