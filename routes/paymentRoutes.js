@@ -1,19 +1,21 @@
 import express from "express";
-
 import {
-  getAllPayment,
+  getAllPayments,
   getPaymentById,
   createPayment,
   updatePayment,
   deletePayment,
 } from "../controllers/paymentController.js";
+import { verifyToken } from "../middleware/auth.js";
+import { verifyRole } from "../middleware/roleMiddleware.js";
 
 const paymentRouter = express.Router();
 
-paymentRouter.get("/", getAllPayment);
-paymentRouter.get("/:id", getPaymentById);
-paymentRouter.post("/", createPayment);
-paymentRouter.put("/:id", updatePayment);
-paymentRouter.delete("/:id", deletePayment);
+// All payment routes require authentication
+paymentRouter.get("/", verifyToken, verifyRole(["admin", "customer"]), getAllPayments);
+paymentRouter.get("/:id", verifyToken, verifyRole(["admin", "customer"]), getPaymentById);
+paymentRouter.post("/", verifyToken, verifyRole("customer"), createPayment);
+paymentRouter.put("/:id", verifyToken, verifyRole("admin"), updatePayment);
+paymentRouter.delete("/:id", verifyToken, verifyRole("admin"), deletePayment);
 
 export default paymentRouter;
