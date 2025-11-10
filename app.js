@@ -1,16 +1,19 @@
 import express from "express";
 import connectDB from "./config/db.js";
-import customerRouter from "./routes/customerRoutes.js";
-import deliveryRouter from "./routes/deliveryRoutes.js";
-import orderRouter from "./routes/orderRoutes.js";
 import cors from "cors";
-import userRouter from "./routes/userRoutes.js";
-import sellerRouter from "./routes/sellerRoutes.js";
-import delivererRouter from "./routes/delivererRoutes.js";
-import paymentRouter from "./routes/paymentRoutes.js";
-import productRouter from "./routes/productRoutes.js";
-import authRouter from "./routes/authRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
+
+// Import routes
+import authRouter from "./routes/authRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
+import sellerRouter from "./routes/sellerRoutes.js";
+import customerRouter from "./routes/customerRoutes.js";
+import delivererRouter from "./routes/delivererRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
+import productRouter from "./routes/productRoutes.js";
+import deliveryRouter from "./routes/deliveryRoutes.js";
+import paymentRouter from "./routes/paymentRoutes.js";
 
 const allowedOrigins = [];
 
@@ -29,15 +32,16 @@ connectDB();
 // Authentication routes
 app.use("/api/auth", authRouter);
 
-// Other routes
-app.use("/api/customers", customerRouter);
+// Entity routes
 app.use("/api/users", userRouter);
-app.use("/api/deliverer", delivererRouter);
-app.use("/api/delivery", deliveryRouter);
-app.use("/api/order", orderRouter);
-app.use("/api/seller", sellerRouter);
-app.use("/api/payment", paymentRouter);
-app.use("/api/product", productRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/sellers", sellerRouter);
+app.use("/api/customers", customerRouter);
+app.use("/api/deliverers", delivererRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/products", productRouter);
+app.use("/api/deliveries", deliveryRouter);
+app.use("/api/payments", paymentRouter);
 
 // 404 Handler - must be after all routes
 app.use(notFound);
