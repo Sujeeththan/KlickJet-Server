@@ -15,8 +15,8 @@ dotenv.config();
 // Ensure we're in development (check NODE_ENV or default to development if not set)
 const nodeEnv = process.env.NODE_ENV || "development";
 if (nodeEnv === "production") {
-  console.error("❌ Seeding is only allowed in development environment");
-  console.error("❌ Current NODE_ENV:", nodeEnv);
+  console.error(" Seeding is only allowed in development environment");
+  console.error(" Current NODE_ENV:", nodeEnv);
   process.exit(1);
 }
 
@@ -194,35 +194,35 @@ const sampleData = {
 
 const seedDatabase = async () => {
   try {
-    console.log("🌱 Starting database seeding...\n");
+    console.log(" Starting database seeding...\n");
 
     // Connect to database
     await connectDB();
-    console.log("✅ Connected to MongoDB\n");
+    console.log(" Connected to MongoDB\n");
 
     // Clear existing data
-    console.log("🗑️  Clearing existing data...");
+    console.log("  Clearing existing data...");
     await User.deleteMany({});
     await Customer.deleteMany({});
     await Seller.deleteMany({});
     await Product.deleteMany({});
     await Order.deleteMany({});
     await Review.deleteMany({});
-    console.log("✅ All collections cleared\n");
+    console.log(" All collections cleared\n");
 
     // Seed Admin User
-    console.log("👤 Seeding Admin User...");
+    console.log(" Seeding Admin User...");
     const adminPassword = await hashPassword(sampleData.admin.password);
     const adminUser = await User.create({
       ...sampleData.admin,
       password: adminPassword,
     });
     console.log(
-      `✅ Admin created: ${adminUser.email} (ID: ${adminUser._id})\n`
+      ` Admin created: ${adminUser.email} (ID: ${adminUser._id})\n`
     );
 
     // Seed Sellers (Providers)
-    console.log("🏪 Seeding Sellers (Providers)...");
+    console.log(" Seeding Sellers (Providers)...");
     const sellers = [];
     for (const sellerData of sampleData.sellers) {
       const sellerPassword = await hashPassword(sellerData.password);
@@ -243,10 +243,10 @@ const seedDatabase = async () => {
         isActive: true,
       });
     }
-    console.log(`✅ ${sellers.length} Sellers created\n`);
+    console.log(` ${sellers.length} Sellers created\n`);
 
     // Seed Customers
-    console.log("🛒 Seeding Customers...");
+    console.log(" Seeding Customers...");
     const customers = [];
     for (const customerData of sampleData.customers) {
       const customerPassword = await hashPassword(customerData.password);
@@ -265,15 +265,15 @@ const seedDatabase = async () => {
         isActive: true,
       });
     }
-    console.log(`✅ ${customers.length} Customers created\n`);
+    console.log(` ${customers.length} Customers created\n`);
 
     // Seed Products (Items)
-    console.log("📦 Seeding Products (Items)...");
+    console.log(" Seeding Products (Items)...");
     const products = await Product.insertMany(sampleData.products);
-    console.log(`✅ ${products.length} Products created\n`);
+    console.log(` ${products.length} Products created\n`);
 
     // Seed Orders (Bookings)
-    console.log("📋 Seeding Orders (Bookings)...");
+    console.log(" Seeding Orders (Bookings)...");
     const orders = [];
     const orderStatuses = [
       "pending",
@@ -305,10 +305,10 @@ const seedDatabase = async () => {
       });
       orders.push(order);
     }
-    console.log(`✅ ${orders.length} Orders created\n`);
+    console.log(` ${orders.length} Orders created\n`);
 
     // Seed Reviews
-    console.log("⭐ Seeding Reviews...");
+    console.log(" Seeding Reviews...");
     const reviews = [];
     const deliveredOrders = orders.filter(
       (order) => order.status === "delivered"
@@ -338,26 +338,26 @@ const seedDatabase = async () => {
       });
       reviews.push(review);
     }
-    console.log(`✅ ${reviews.length} Reviews created\n`);
+    console.log(` ${reviews.length} Reviews created\n`);
 
     // Summary
     console.log("═══════════════════════════════════════");
-    console.log("✅ Database seeded successfully!");
+    console.log(" Database seeded successfully!");
     console.log("═══════════════════════════════════════");
-    console.log(`👤 Admin: 1`);
-    console.log(`🏪 Sellers (Providers): ${sellers.length}`);
-    console.log(`🛒 Customers: ${customers.length}`);
-    console.log(`📦 Products (Items): ${products.length}`);
-    console.log(`📋 Orders (Bookings): ${orders.length}`);
-    console.log(`⭐ Reviews: ${reviews.length}`);
+    console.log(` Admin: 1`);
+    console.log(` Sellers (Providers): ${sellers.length}`);
+    console.log(` Customers: ${customers.length}`);
+    console.log(` Products (Items): ${products.length}`);
+    console.log(` Orders (Bookings): ${orders.length}`);
+    console.log(` Reviews: ${reviews.length}`);
     console.log("═══════════════════════════════════════\n");
 
     // Close database connection
     await mongoose.connection.close();
-    console.log("🔌 Database connection closed");
+    console.log(" Database connection closed");
     process.exit(0);
   } catch (error) {
-    console.error("❌ Error seeding database:", error);
+    console.error(" Error seeding database:", error);
     await mongoose.connection.close();
     process.exit(1);
   }
