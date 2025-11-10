@@ -1,27 +1,21 @@
 import express from "express";
 import {
-  getAllOrder,
+  getAllOrders,
   getOrderById,
   createOrder,
   updateOrder,
   deleteOrder,
 } from "../controllers/orderController.js";
-import { protect } from "../middleware/auth.js";
-import { adminOrApprovedSeller, adminOnly } from "../middleware/roleMiddleware.js";
+import { verifyToken } from "../middleware/auth.js";
+import { verifyRole } from "../middleware/roleMiddleware.js";
 
 const orderRouter = express.Router();
 
-// Protect all order routes - sellers handle orders, so they need to be approved
-// Admin has full access, approved sellers can access order routes
-orderRouter.use(protect);
-
-// Order routes - protected (admin or approved seller)
-// Note: You may want to allow customers to create/view their own orders
-// Adjust these routes based on your business logic
-orderRouter.get("/", adminOrApprovedSeller, getAllOrder);
-orderRouter.get("/:id", adminOrApprovedSeller, getOrderById);
-orderRouter.post("/", adminOrApprovedSeller, createOrder);
-orderRouter.put("/:id", adminOrApprovedSeller, updateOrder);
-orderRouter.delete("/:id", adminOnly, deleteOrder); // Only admin can delete orders
+// All order routes require authentication
+orderRouter.get("/", verifyToken, verifyRole(["admin", "seller", "customer"]), getAllOrders);
+orderRouter.get("/:id", verifyToken, verifyRole(["admin", "seller", "customer"]), getOrderById);
+orderRouter.post("/", verifyToken, verifyRole("customer"), createOrder);
+orderRouter.put("/:id", verifyToken, verifyRole(["admin", "seller"]), updateOrder);
+orderRouter.delete("/:id", verifyToken, verifyRole("admin"), deleteOrder);
 
 export default orderRouter;
