@@ -10,6 +10,7 @@ import delivererRouter from "./routes/delivererRoutes.js";
 import paymentRouter from "./routes/paymentRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import authRouter from "./routes/authRoutes.js";
+import { errorHandler, notFound } from "./middleware/errorHandler.js";
 
 const allowedOrigins = [];
 
@@ -37,6 +38,12 @@ app.use("/api/order", orderRouter);
 app.use("/api/seller", sellerRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/product", productRouter);
+
+// 404 Handler - must be after all routes
+app.use(notFound);
+
+// Global Error Handler - must be last
+app.use(errorHandler);
 
 app.listen(PORT, () =>
   console.log(`Server is running in http://localhost:${PORT}`)
