@@ -17,8 +17,7 @@ reviewRouter.get("/:id", optionalAuth, getReviewById);
 
 // Protected routes - customers can create/update/delete their reviews
 reviewRouter.post("/", verifyToken, verifyRole("customer"), createReview);
-reviewRouter.put("/:id", verifyToken, verifyRole(["admin", "customer"]), updateReview);
-reviewRouter.delete("/:id", verifyToken, verifyRole(["admin", "customer"]), deleteReview);
+reviewRouter.put("/:id", verifyToken, verifyRole("customer"), updateReview);
+reviewRouter.delete("/:id", verifyToken, verifyRole("customer"), deleteReview);
 
 export default reviewRouter;
-

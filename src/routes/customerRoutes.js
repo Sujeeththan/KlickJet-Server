@@ -11,10 +11,19 @@ import { verifyRole } from "../middleware/roleMiddleware.js";
 const customerRouter = express.Router();
 
 // All routes require authentication
-customerRouter.get("/", verifyToken, verifyRole(["admin", "customer"]), getAllCustomers);
-customerRouter.get("/:id", verifyToken, verifyRole(["admin", "customer"]), getCustomerById);
-customerRouter.put("/:id", verifyToken, verifyRole(["admin", "customer"]), updateCustomer);
-customerRouter.delete("/:id", verifyToken, verifyRole("admin"), deleteCustomer);
+customerRouter.get("/", verifyToken, verifyRole("admin"), getAllCustomers);
+customerRouter.get(
+  "/:id",
+  verifyToken,
+  verifyRole("customer"),
+  getCustomerById
+);
+customerRouter.put(
+  "/:id",
+  verifyToken,
+  verifyRole("customer"),
+  updateCustomer
+);
+customerRouter.delete("/:id", verifyToken, verifyRole("customer"), deleteCustomer);
 
 export default customerRouter;
-

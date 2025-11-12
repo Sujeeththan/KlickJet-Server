@@ -11,10 +11,10 @@ import { verifyRole } from "../middleware/roleMiddleware.js";
 const sellerRouter = express.Router();
 
 // All routes require authentication
-sellerRouter.get("/", verifyToken, verifyRole(["admin", "seller"]), getAllSellers);
+sellerRouter.get("/", verifyToken, verifyRole("admin" ), getAllSellers);
 sellerRouter.get("/:id", verifyToken, verifyRole(["admin", "seller"]), getSellerById);
-sellerRouter.put("/:id", verifyToken, verifyRole(["admin", "seller"]), updateSeller);
-sellerRouter.delete("/:id", verifyToken, verifyRole("admin"), deleteSeller);
+sellerRouter.put("/:id", verifyToken, verifyRole( "seller"), updateSeller);
+sellerRouter.delete("/:id", verifyToken, verifyRole("admin", "seller"), deleteSeller);
 
 export default sellerRouter;
 

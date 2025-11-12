@@ -154,3 +154,4 @@ export const deleteSeller = catchAsync(async (req, res, next) => {
   });
 });
 
+

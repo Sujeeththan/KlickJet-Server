@@ -83,3 +83,4 @@ delivererSchema.methods.comparePassword = async function (candidatePassword) {
 
 export default mongoose.model("Deliverer", delivererSchema);
 
+

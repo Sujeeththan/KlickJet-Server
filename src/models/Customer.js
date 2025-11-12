@@ -77,3 +77,4 @@ customerSchema.methods.comparePassword = async function (candidatePassword) {
 
 export default mongoose.model("Customer", customerSchema);
 
+

@@ -168,3 +168,4 @@ export const deleteProduct = catchAsync(async (req, res, next) => {
   });
 });
 
+
