@@ -1,19 +1,20 @@
 import express from "express";
-import connectDB from "./config/db.js";
+import connectDB from "./src/config/db.js";
 import cors from "cors";
-import { errorHandler, notFound } from "./middleware/errorHandler.js";
+import { errorHandler, notFound } from "./src/middleware/errorHandler.js";
 
 // Import routes
-import authRouter from "./routes/authRoutes.js";
-import userRouter from "./routes/userRoutes.js";
-import adminRouter from "./routes/adminRoutes.js";
-import sellerRouter from "./routes/sellerRoutes.js";
-import customerRouter from "./routes/customerRoutes.js";
-import delivererRouter from "./routes/delivererRoutes.js";
-import orderRouter from "./routes/orderRoutes.js";
-import productRouter from "./routes/productRoutes.js";
-import deliveryRouter from "./routes/deliveryRoutes.js";
-import paymentRouter from "./routes/paymentRoutes.js";
+import authRouter from "./src/routes/authRoutes.js";
+import userRouter from "./src/routes/userRoutes.js";
+import adminRouter from "./src/routes/adminRoutes.js";
+import customerRouter from "./src/routes/customerRoutes.js";
+import sellerRouter from "./src/routes/sellerRoutes.js";
+import delivererRouter from "./src/routes/delivererRoutes.js";
+import productRouter from "./src/routes/productRoutes.js";
+import orderRouter from "./src/routes/orderRoutes.js";
+import reviewRouter from "./src/routes/reviewRoutes.js";
+import deliveryRouter from "./src/routes/deliveryRoutes.js";
+import paymentRouter from "./src/routes/paymentRoutes.js";
 
 const allowedOrigins = [];
 
@@ -22,27 +23,29 @@ app.use(express.json());
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 app.get("/", (req, res) => {
-  res.send("My project final project system working");
+  res.send("KlickJet Server is running");
 });
 
 const PORT = process.env.PORT;
 
 connectDB();
 
-// Authentication routes - Unified system
-// Register and login at /api/users
-app.use("/api/users", authRouter);
-// Protected routes and admin functions at /api/auth (backward compatibility)
+// Authentication routes
 app.use("/api/auth", authRouter);
 
-// Entity routes
-app.use("/api/admin/users", userRouter); // User management routes (admin only)
+// User management routes (admin only - for creating admin users)
+app.use("/api/users", userRouter);
+
+// Admin routes (approval actions)
 app.use("/api/admin", adminRouter);
-app.use("/api/sellers", sellerRouter);
+
+// Entity routes
 app.use("/api/customers", customerRouter);
+app.use("/api/sellers", sellerRouter);
 app.use("/api/deliverers", delivererRouter);
-app.use("/api/orders", orderRouter);
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/reviews", reviewRouter);
 app.use("/api/deliveries", deliveryRouter);
 app.use("/api/payments", paymentRouter);
 
