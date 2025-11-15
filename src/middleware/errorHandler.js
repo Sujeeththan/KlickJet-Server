@@ -57,7 +57,7 @@ const sendErrorDev = (err, res) => {
   };
 
   if (err.errors) {
-    response.errors = err.errors;
+    response.error = err.errors;
   }
 
   res.status(err.statusCode || 500).json(response);
